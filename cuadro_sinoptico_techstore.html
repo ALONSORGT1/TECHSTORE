@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cuadro Sinóptico — TechStore Mini E-commerce</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --purple-50: #EEEDFE; --purple-100: #CECBF6; --purple-600: #534AB7; --purple-800: #3C3489; --purple-900: #26215C;
+      --teal-50: #E1F5EE; --teal-100: #9FE1CB; --teal-600: #0F6E56; --teal-800: #085041; --teal-900: #04342C;
+      --coral-50: #FAECE7; --coral-100: #F5C4B3; --coral-600: #993C1D; --coral-800: #712B13; --coral-900: #4A1B0C;
+      --blue-50: #E6F1FB; --blue-100: #B5D4F4; --blue-600: #185FA5; --blue-800: #0C447C; --blue-900: #042C53;
+      --amber-50: #FAEEDA; --amber-100: #FAC775; --amber-600: #854F0B; --amber-800: #633806; --amber-900: #412402;
+      --pink-50: #FBEAF0; --pink-100: #F4C0D1; --pink-600: #993556; --pink-800: #72243E; --pink-900: #4B1528;
+      --gray-50: #F1EFE8; --gray-200: #B4B2A9; --gray-400: #888780; --gray-600: #5F5E5A;
+      --bg: #f8f7f4;
+      --card-bg: #ffffff;
+      --border: rgba(0,0,0,0.1);
+      --text-primary: #1a1a18;
+      --text-secondary: #5a5a56;
+      --line: rgba(0,0,0,0.15);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --purple-50: #26215C; --purple-100: #3C3489; --purple-600: #AFA9EC; --purple-800: #CECBF6; --purple-900: #EEEDFE;
+        --teal-50: #04342C; --teal-100: #085041; --teal-600: #5DCAA5; --teal-800: #9FE1CB; --teal-900: #E1F5EE;
+        --coral-50: #4A1B0C; --coral-100: #712B13; --coral-600: #F0997B; --coral-800: #F5C4B3; --coral-900: #FAECE7;
+        --blue-50: #042C53; --blue-100: #0C447C; --blue-600: #85B7EB; --blue-800: #B5D4F4; --blue-900: #E6F1FB;
+        --amber-50: #412402; --amber-100: #633806; --amber-600: #EF9F27; --amber-800: #FAC775; --amber-900: #FAEEDA;
+        --pink-50: #4B1528; --pink-100: #72243E; --pink-600: #ED93B1; --pink-800: #F4C0D1; --pink-900: #FBEAF0;
+        --gray-50: #2C2C2A; --gray-200: #444441; --gray-400: #888780; --gray-600: #B4B2A9;
+        --bg: #1a1a17;
+        --card-bg: #242421;
+        --border: rgba(255,255,255,0.1);
+        --text-primary: #e8e6e0;
+        --text-secondary: #9a9890;
+        --line: rgba(255,255,255,0.15);
+      }
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding: 32px 20px 60px;
+    }
+
+    h1.main-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(18px, 3vw, 26px);
+      text-align: center;
+      margin-bottom: 6px;
+      color: var(--text-primary);
+    }
+    p.main-sub {
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 36px;
+    }
+
+    .sinoptico {
+      max-width: 860px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    /* Contenedor de cada rama */
+    .rama {
+      display: flex;
+      align-items: stretch;
+      position: relative;
+      margin-bottom: 12px;
+    }
+
+    /* Eje vertical izquierdo */
+    .eje {
+      width: 4px;
+      background: var(--line);
+      border-radius: 2px;
+      position: relative;
+      flex-shrink: 0;
+      margin-right: 0;
+    }
+    .eje::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: -10px;
+      transform: translateY(-50%);
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 2px solid var(--line);
+      background: var(--bg);
+    }
+
+    /* Conector horizontal */
+    .conector {
+      width: 28px;
+      height: 2px;
+      background: var(--line);
+      align-self: center;
+      flex-shrink: 0;
+    }
+
+    /* Etiqueta de categoría */
+    .etiqueta {
+      width: 148px;
+      flex-shrink: 0;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 12px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      text-align: center;
+      line-height: 1.3;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    /* Llave visual SVG */
+    .llave-wrap {
+      width: 28px;
+      flex-shrink: 0;
+      align-self: stretch;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .llave-wrap svg { width: 28px; height: 100%; overflow: visible; }
+
+    /* Sub-nodos */
+    .sub-nodos {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      justify-content: center;
+      padding: 6px 0;
+    }
+
+    .nodo {
+      border-radius: 8px;
+      padding: 8px 14px;
+      cursor: pointer;
+      transition: transform 0.15s, opacity 0.15s;
+      border: 1px solid transparent;
+    }
+    .nodo:hover { transform: translateX(3px); opacity: 0.88; }
+    .nodo-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: 12.5px;
+      margin-bottom: 1px;
+    }
+    .nodo-desc {
+      font-size: 11.5px;
+      opacity: 0.8;
+      line-height: 1.4;
+    }
+
+    /* Colores por rama */
+    .r-purple .etiqueta { background: var(--purple-50); color: var(--purple-800); border: 1px solid var(--purple-100); }
+    .r-purple .nodo { background: var(--purple-50); border-color: var(--purple-100); }
+    .r-purple .nodo-title { color: var(--purple-800); }
+    .r-purple .nodo-desc { color: var(--purple-600); }
+
+    .r-teal .etiqueta { background: var(--teal-50); color: var(--teal-800); border: 1px solid var(--teal-100); }
+    .r-teal .nodo { background: var(--teal-50); border-color: var(--teal-100); }
+    .r-teal .nodo-title { color: var(--teal-800); }
+    .r-teal .nodo-desc { color: var(--teal-600); }
+
+    .r-coral .etiqueta { background: var(--coral-50); color: var(--coral-800); border: 1px solid var(--coral-100); }
+    .r-coral .nodo { background: var(--coral-50); border-color: var(--coral-100); }
+    .r-coral .nodo-title { color: var(--coral-800); }
+    .r-coral .nodo-desc { color: var(--coral-600); }
+
+    .r-blue .etiqueta { background: var(--blue-50); color: var(--blue-800); border: 1px solid var(--blue-100); }
+    .r-blue .nodo { background: var(--blue-50); border-color: var(--blue-100); }
+    .r-blue .nodo-title { color: var(--blue-800); }
+    .r-blue .nodo-desc { color: var(--blue-600); }
+
+    .r-amber .etiqueta { background: var(--amber-50); color: var(--amber-800); border: 1px solid var(--amber-100); }
+    .r-amber .nodo { background: var(--amber-50); border-color: var(--amber-100); }
+    .r-amber .nodo-title { color: var(--amber-800); }
+    .r-amber .nodo-desc { color: var(--amber-600); }
+
+    .r-pink .etiqueta { background: var(--pink-50); color: var(--pink-800); border: 1px solid var(--pink-100); }
+    .r-pink .nodo { background: var(--pink-50); border-color: var(--pink-100); }
+    .r-pink .nodo-title { color: var(--pink-800); }
+    .r-pink .nodo-desc { color: var(--pink-600); }
+
+    /* Encabezado principal */
+    .header-nodo {
+      max-width: 860px;
+      margin: 0 auto 0 auto;
+      border-radius: 12px;
+      padding: 14px 24px;
+      background: var(--purple-50);
+      border: 1px solid var(--purple-100);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      margin-bottom: 0;
+    }
+    .header-nodo .hn-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(14px, 2.2vw, 17px);
+      color: var(--purple-800);
+      text-align: center;
+    }
+    .header-nodo .hn-sub {
+      font-size: 12px;
+      color: var(--purple-600);
+      text-align: center;
+    }
+
+    /* Línea vertical central que une todo */
+    .eje-central {
+      width: 4px;
+      background: var(--line);
+      border-radius: 2px;
+      margin: 0 auto;
+      max-width: 860px;
+    }
+
+    .pie {
+      max-width: 860px;
+      margin: 20px auto 0;
+      text-align: center;
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 20px;
+    }
+
+    /* Llave en SVG */
+    .llave-svg { display: block; }
+  </style>
+</head>
+<body>
+
+  <div style="max-width:860px;margin:0 auto;">
+
+    <!-- Nodo raíz -->
+    <div class="header-nodo">
+      <div class="hn-title">Mini E-commerce — TechStore</div>
+      <div class="hn-sub">Aplicación web que simula una tienda en línea con carrito de compras interactivo</div>
+    </div>
+
+    <!-- Línea central de 18px hacia abajo antes de ramas -->
+    <div style="width:4px;height:18px;background:var(--line);border-radius:2px;margin:0 auto;"></div>
+
+    <div class="sinoptico">
+
+      <!-- RAMA: Productos -->
+      <div class="rama r-teal">
+        <div class="eje"></div>
+        <div class="conector"></div>
+        <div class="etiqueta">1. Productos</div>
+        <div class="llave-wrap">
+          <svg viewBox="0 0 28 120" preserveAspectRatio="none" class="llave-svg" style="height:120px;">
+            <path d="M4 10 Q20 10 20 30 L20 50 Q20 60 28 60 Q20 60 20 70 L20 90 Q20 110 4 110"
+              fill="none" stroke="var(--line)" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="sub-nodos" style="min-height:120px;">
+          <div class="nodo" title="Lista estática de 5 productos disponibles">
+            <div class="nodo-title">Arreglo de objetos (const productos)</div>
+            <div class="nodo-desc">Lista estática con 5 productos definidos al inicio del script</div>
+          </div>
+          <div class="nodo" title="Cada producto tiene estas propiedades">
+            <div class="nodo-title">Propiedades: id, nombre, precio, emoji</div>
+            <div class="nodo-desc">Identifican y describen visualmente cada artículo en pantalla</div>
+          </div>
+          <div class="nodo" title="Genera tarjetas HTML por cada producto">
+            <div class="nodo-title">renderizarProductos()</div>
+            <div class="nodo-desc">Itera el arreglo con forEach() y crea tarjetas en el DOM</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="width:4px;height:8px;background:var(--line);border-radius:2px;margin:0 auto;"></div>
+
+      <!-- RAMA: Carrito -->
+      <div class="rama r-coral">
+        <div class="eje"></div>
+        <div class="conector"></div>
+        <div class="etiqueta">2. Carrito</div>
+        <div class="llave-wrap">
+          <svg viewBox="0 0 28 120" preserveAspectRatio="none" class="llave-svg" style="height:120px;">
+            <path d="M4 10 Q20 10 20 30 L20 50 Q20 60 28 60 Q20 60 20 70 L20 90 Q20 110 4 110"
+              fill="none" stroke="var(--line)" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="sub-nodos" style="min-height:120px;">
+          <div class="nodo">
+            <div class="nodo-title">Array vacío (let carrito = [])</div>
+            <div class="nodo-desc">Estado global que almacena los productos seleccionados por el usuario</div>
+          </div>
+          <div class="nodo">
+            <div class="nodo-title">Agregar con push() y spread {...p}</div>
+            <div class="nodo-desc">Copia el objeto producto para evitar mutaciones del arreglo original</div>
+          </div>
+          <div class="nodo">
+            <div class="nodo-title">Total calculado con reduce()</div>
+            <div class="nodo-desc">Suma acumulada de precios de todos los artículos en el carrito</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="width:4px;height:8px;background:var(--line);border-radius:2px;margin:0 auto;"></div>
+
+      <!-- RAMA: Funciones -->
+      <div class="rama r-blue">
+        <div class="eje"></div>
+        <div class="conector"></div>
+        <div class="etiqueta">3. Funciones principales</div>
+        <div class="llave-wrap">
+          <svg viewBox="0 0 28 200" preserveAspectRatio="none" class="llave-svg" style="height:200px;">
+            <path d="M4 10 Q20 10 20 40 L20 90 Q20 100 28 100 Q20 100 20 110 L20 160 Q20 190 4 190"
+              fill="none" stroke="var(--line)" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="sub-nodos" style="min-height:200px;">
+          <div class="nodo">
+            <div class="nodo-title">agregarAlCarrito(id)</div>
+            <div class="nodo-desc">Busca el producto con find() y lo agrega al array del carrito</div>
+          </div>
+          <div class="nodo">
+            <div class="nodo-title">eliminarDelCarrito(index)</div>
+            <div class="nodo-desc">Usa splice() para quitar un ítem según su posición en el array</div>
+          </div>
+          <div class="nodo">
+            <div class="nodo-title">actualizarCarrito()</div>
+            <div class="nodo-desc">Redibuja la lista del carrito y recalcula el total mostrado</div>
+          </div>
+          <div class="nodo">
+            <div class="nodo-title">finalizarCompra()</div>
+            <div class="nodo-desc">Muestra confirmación, vacía el carrito y cierra el panel lateral</div>
+          </div>
+          <div class="nodo">
+            <div class="nodo-title">mostrarToast(msg)</div>
+            <div class="nodo-desc">Notificación temporal de feedback; desaparece a los 2.8 segundos</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="width:4px;height:8px;background:var(--line);border-radius:2px;margin:0 auto;"></div>
+
+      <!-- RAMA: DOM -->
+      <div class="rama r-amber">
+        <div class="eje"></div>
+        <div class="conector"></div>
+        <div class="etiqueta">4. Manipulación del DOM</div>
+        <div class="llave-wrap">
+          <svg viewBox="0 0 28 120" preserveAspectRatio="none" class="llave-svg" style="height:120px;">
+            <path d="M4 10 Q20 10 20 30 L20 50 Q20 60 28 60 Q20 60 20 70 L20 90 Q20 110 4 110"
+              fill="none" stroke="var(--line)" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="sub-nodos" style="min-height:120px;">
+          <div class="nodo">
+            <div class="nodo-title">getElementById()</div>
+            <div class="nodo-desc">Selecciona nodos del HTML por su id para leer o modificarlos</div>
+          </div>
+          <div class="nodo">
+            <div class="nodo-title">innerHTML / innerText</div>
+            <div class="nodo-desc">Escribe contenido HTML o texto dinámico directamente en los elementos</div>
+          </div>
+          <div class="nodo">
+            <div class="nodo-title">createElement() / appendChild()</div>
+            <div class="nodo-desc">Construye nodos nuevos en memoria y los inserta en el árbol del DOM</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="width:4px;height:8px;background:var(--line);border-radius:2px;margin:0 auto;"></div>
+
+      <!-- RAMA: Interacción -->
+      <div class="rama r-pink">
+        <div class="eje"></div>
+        <div class="conector"></div>
+        <div class="etiqueta">5. Interacción y eventos</div>
+        <div class="llave-wrap">
+          <svg viewBox="0 0 28 160" preserveAspectRatio="none" class="llave-svg" style="height:160px;">
+            <path d="M4 10 Q20 10 20 40 L20 70 Q20 80 28 80 Q20 80 20 90 L20 120 Q20 150 4 150"
+              fill="none" stroke="var(--line)" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="sub-nodos" style="min-height:160px;">
+          <div class="nodo">
+            <div class="nodo-title">Eventos onclick en botones</div>
+            <div class="nodo-desc">Disparan funciones del carrito al hacer clic sobre las tarjetas</div>
+          </div>
+          <div class="nodo">
+            <div class="nodo-title">DOMContentLoaded</div>
+            <div class="nodo-desc">Inicia la app cuando todo el HTML ya fue parseado y está disponible</div>
+          </div>
+          <div class="nodo">
+            <div class="nodo-title">window scroll listener</div>
+            <div class="nodo-desc">Oculta el header al bajar y lo muestra al subir; mejora la UX</div>
+          </div>
+          <div class="nodo">
+            <div class="nodo-title">toggleCarrito()</div>
+            <div class="nodo-desc">Abre y cierra el panel lateral añadiendo/quitando clase CSS "open"</div>
+          </div>
+        </div>
+      </div>
+</body>
+</html>
